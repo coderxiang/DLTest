@@ -1,6 +1,5 @@
 Deep Learning Tutorials
 =======================
-
 Deep Learning is a new area of Machine Learning research, which has been
 introduced with the objective of moving Machine Learning closer to one of its
 original goals: Artificial Intelligence.  Deep Learning is about learning
