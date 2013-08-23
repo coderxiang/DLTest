@@ -8,21 +8,70 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+import gzip
+import cPickle
 
-image = Image.open('../data/BDGP/insitu10000_s.bmp').convert("L")
-arr = np.asarray(image)
-plt.imshow(arr, cmap = cm.Greys_r)
-plt.show()
 
-# lab = open('label.txt', 'r')
+
+n = 128 * 320
+# image = Image.open('../data/BDGP/insitu10000_s.bmp').convert("L")
+# arr = np.asarray(image)
+# plt.imshow(arr, cmap = cm.Greys_r)
+# plt.show()
+
+train_size = 2400
+train_file = open('../data/BDGP/trData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+train_data = np.zeros([2400, n])
+a = [0] * train_size 
+line_cnt = 0
+for line in train_file:
+	[name, lab] = line.split(' ')
+	train_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	a[line_cnt] = int(lab)
+	line_cnt += 1
+  	
+train_set = [train_data, np.asarray(a)]
+
+test_size = 721
+test_file = open('../data/BDGP/tstData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+test_data = np.zeros([test_size, n])
+a = [0] * test_size
+line_cnt = 0
+for line in test_file:
+	[name, lab] = line.split(' ')
+	test_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	a[line_cnt] = int(lab)
+	line_cnt += 1
+	
+test_set = [test_data, np.asarray(a)]
+
+valid_size = 600
+valid_file = open('../data/BDGP/valData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+valid_data = np.zeros([valid_size, n])
+a = [0] * valid_size
+line_cnt = 0
+for line in valid_file:
+	[name, lab] = line.split(' ')
+	valid_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	a[line_cnt] = int(lab)
+	line_cnt += 1
+ 	
+valid_set = [valid_data, np.asarray(a)]
+
+
+cPickle.dump([train_set, valid_set, test_set], open('bdgp.pkl', 'wb'), protocol=0)
+
+
+
+
 # d = {}
 # for line in lab:
 # 	[s, t] = line.split(' ')
 # 	d[s] = int(t)
 
-imgs = listdir('../data/BDGP')
+#imgs = listdir('../data/BDGP')
 
-print imgs
+#print imgs
 
 
 # open random image of dimensions 639x516
