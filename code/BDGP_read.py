@@ -20,7 +20,7 @@ n = 128 * 320
 # plt.show()
 
 train_size = 2400
-train_file = open('../data/BDGP/trData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+train_file = open('../data/BDGP/trData.txt', 'r')
 train_data = np.zeros([2400, n])
 a = [0] * train_size 
 line_cnt = 0
@@ -29,11 +29,11 @@ for line in train_file:
 	train_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
 	a[line_cnt] = int(lab)
 	line_cnt += 1
-  	
+	
 train_set = [train_data, np.asarray(a)]
 
 test_size = 721
-test_file = open('../data/BDGP/tstData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+test_file = open('../data/BDGP/tstData.txt', 'r')
 test_data = np.zeros([test_size, n])
 a = [0] * test_size
 line_cnt = 0
@@ -46,7 +46,7 @@ for line in test_file:
 test_set = [test_data, np.asarray(a)]
 
 valid_size = 600
-valid_file = open('../data/BDGP/valData.txt', 'r')																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+valid_file = open('../data/BDGP/valData.txt', 'r')
 valid_data = np.zeros([valid_size, n])
 a = [0] * valid_size
 line_cnt = 0
@@ -59,7 +59,7 @@ for line in valid_file:
 valid_set = [valid_data, np.asarray(a)]
 
 
-cPickle.dump([train_set, valid_set, test_set], open('bdgp.pkl', 'wb'), protocol=0)
+cPickle.dump([train_set, valid_set, test_set], open('../data/bdgp.pkl', 'wb'), protocol=-1)
 
 
 

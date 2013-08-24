@@ -1,6 +1,6 @@
 data/BDGP
 code/*.pyc
-data/mnist.pkl.gz
+data/*.gz
 html
 *.pyc
 *~
