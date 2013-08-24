@@ -1,6 +1,8 @@
 data/BDGP
 code/*.pyc
 data/*.gz
+data/*.zip
+data/Nottingham
 html
 *.pyc
 *~
