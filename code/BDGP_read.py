@@ -61,6 +61,12 @@ valid_set = [valid_data, np.asarray(a)]
 
 cPickle.dump([train_set, valid_set, test_set], open('../data/bdgp.pkl', 'wb'), protocol=-1)
 
+f_in = open('../data/bdgp.pkl', 'rb')
+f_out = gzip.open('../data/bdgp.pkl.gz', 'wb')
+f_out.writelines(f_in)
+f_out.close()
+f_in.close()
+
 
 
 

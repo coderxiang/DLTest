@@ -1,6 +1,7 @@
 data/BDGP
 code/*.pyc
 data/*.gz
+data/*.pkl
 data/*.zip
 data/Nottingham
 html
