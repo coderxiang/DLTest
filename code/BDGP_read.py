@@ -26,7 +26,7 @@ a = [0] * train_size
 line_cnt = 0
 for line in train_file:
 	[name, lab] = line.split(' ')
-	train_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	train_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name), dtype='float32'), 40960)
 	a[line_cnt] = int(lab)
 	line_cnt += 1
 	
@@ -39,7 +39,7 @@ a = [0] * test_size
 line_cnt = 0
 for line in test_file:
 	[name, lab] = line.split(' ')
-	test_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	test_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name), dtype='float32'), 40960)
 	a[line_cnt] = int(lab)
 	line_cnt += 1
 	
@@ -52,7 +52,7 @@ a = [0] * valid_size
 line_cnt = 0
 for line in valid_file:
 	[name, lab] = line.split(' ')
-	valid_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name)), 40960)
+	valid_data[line_cnt,] = np.reshape(np.asarray(Image.open('../data/BDGP/' + name), dtype='float32'), 40960)
 	a[line_cnt] = int(lab)
 	line_cnt += 1
  	

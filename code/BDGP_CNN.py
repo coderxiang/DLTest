@@ -104,7 +104,8 @@ class LeNetConvPoolLayer(object):
 
 
 def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
-                    dataset='../data/mnist.pkl.gz',
+#                    dataset='../data/mnist.pkl.gz',
+					dataset='../data/bdgp.pkl.gz',
                     nkerns=[20, 50], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
@@ -144,7 +145,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
 
-    ishape = (28, 28)  # this is the size of MNIST images
+    ishape = (128, 320)  # this is the size of BDGP images
 
     ######################
     # BUILD ACTUAL MODEL #
@@ -153,22 +154,22 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 
     # Reshape matrix of rasterized images of shape (batch_size,28*28)
     # to a 4D tensor, compatible with our LeNetConvPoolLayer
-    layer0_input = x.reshape((batch_size, 1, 28, 28))
+    layer0_input = x.reshape((batch_size, 1, 128, 320))
 
     # Construct the first convolutional pooling layer:
-    # filtering reduces the image size to (28-5+1,28-5+1)=(24,24)
-    # maxpooling reduces this further to (24/2,24/2) = (12,12)
+    # filtering reduces the image size to (128-5+1,320-5+1)=(124,316)
+    # maxpooling reduces this further to (24/2,24/2) = (62,158)
     # 4D output tensor is thus of shape (batch_size,nkerns[0],12,12)
     layer0 = LeNetConvPoolLayer(rng, input=layer0_input,
-            image_shape=(batch_size, 1, 28, 28),
+            image_shape=(batch_size, 1, 128, 320),
             filter_shape=(nkerns[0], 1, 5, 5), poolsize=(2, 2))
 
     # Construct the second convolutional pooling layer
-    # filtering reduces the image size to (12-5+1,12-5+1)=(8,8)
-    # maxpooling reduces this further to (8/2,8/2) = (4,4)
+    # filtering reduces the image size to (128-5+1,320-5+1)=(124,316)
+    # maxpooling reduces this further to (124/2,316/2) = (62,158)
     # 4D output tensor is thus of shape (nkerns[0],nkerns[1],4,4)
     layer1 = LeNetConvPoolLayer(rng, input=layer0.output,
-            image_shape=(batch_size, nkerns[0], 12, 12),
+            image_shape=(batch_size, nkerns[0], 62, 158),
             filter_shape=(nkerns[1], nkerns[0], 5, 5), poolsize=(2, 2))
 
     # the TanhLayer being fully-connected, it operates on 2D matrices of
@@ -177,11 +178,11 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     layer2_input = layer1.output.flatten(2)
 
     # construct a fully-connected sigmoidal layer
-    layer2 = HiddenLayer(rng, input=layer2_input, n_in=nkerns[1] * 4 * 4,
+    layer2 = HiddenLayer(rng, input=layer2_input, n_in=nkerns[1] * 62 * 158,
                          n_out=500, activation=T.tanh)
 
     # classify the values of the fully-connected sigmoidal layer
-    layer3 = LogisticRegression(input=layer2.output, n_in=500, n_out=10)
+    layer3 = LogisticRegression(input=layer2.output, n_in=500, n_out=15																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														)
 
     # the cost we minimize during training is the NLL of the model
     cost = layer3.negative_log_likelihood(y)
