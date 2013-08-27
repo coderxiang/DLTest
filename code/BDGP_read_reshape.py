@@ -13,7 +13,7 @@ import cPickle
 
 
 
-n = 28 * 28
+n = 32 * 80
 # image = Image.open('../data/BDGP/insitu10000_s.bmp').convert("L")
 # arr = np.asarray(image)
 # plt.imshow(arr, cmap = cm.Greys_r)

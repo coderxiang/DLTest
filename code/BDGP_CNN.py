@@ -105,8 +105,9 @@ class LeNetConvPoolLayer(object):
 
 def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 #                    dataset='../data/mnist.pkl.gz',
-					dataset='../data/bdgp.pkl.gz',
-                    nkerns=[20, 50], batch_size=10):
+#					dataset='../data/bdgp.pkl.gz',
+					dataset='../data/bdgp_reshape.pkl.gz',
+                    nkerns=[20, 50], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -145,7 +146,14 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
 
-    ishape = (128, 320)  # this is the size of BDGP images
+    r1 = 32
+	c1 = 80
+	poolsize_r = 2
+	poolsize_c = 2
+	filtersize_r = 5
+	filtersize_c = 5
+	
+    ishape = (r1, c1)  # this is the size of BDGP images
 
     ######################
     # BUILD ACTUAL MODEL #
@@ -154,31 +162,38 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 
     # Reshape matrix of rasterized images of shape (batch_size,28*28)
     # to a 4D tensor, compatible with our LeNetConvPoolLayer
-    layer0_input = x.reshape((batch_size, 1, 128, 320))
+    layer0_input = x.reshape((batch_size, 1, r1, c1))
+
 
     # Construct the first convolutional pooling layer:
     # filtering reduces the image size to (128-5+1,320-5+1)=(124,316)
     # maxpooling reduces this further to (24/2,24/2) = (62,158)
     # 4D output tensor is thus of shape (batch_size,nkerns[0],12,12)
     layer0 = LeNetConvPoolLayer(rng, input=layer0_input,
-            image_shape=(batch_size, 1, 128, 320),
-            filter_shape=(nkerns[0], 1, 5, 5), poolsize=(2, 2))
+            image_shape=(batch_size, 1, r1, c1),
+            filter_shape=(nkerns[0], 1, filtersize_r, filtersize_c), poolsize=(poolsize_r, poolsize_c))
 
+	r2 = r1 - filtersize_r + 1
+	c2 = c1 - filtersize_c + 1
     # Construct the second convolutional pooling layer
     # filtering reduces the image size to (128-5+1,320-5+1)=(124,316)
     # maxpooling reduces this further to (124/2,316/2) = (62,158)
     # 4D output tensor is thus of shape (nkerns[0],nkerns[1],4,4)
+	# Make sure (r2, c2) is divisble by (poolsize_r, poolsize_c)
     layer1 = LeNetConvPoolLayer(rng, input=layer0.output,
-            image_shape=(batch_size, nkerns[0], 62, 158),
-            filter_shape=(nkerns[1], nkerns[0], 5, 5), poolsize=(2, 2))
+            image_shape=(batch_size, nkerns[0], r2/poolsize_r, c2/poolsize_c),
+            filter_shape=(nkerns[1], nkerns[0], filtersize_r, filtersize_c), poolsize=(poolsize_r, poolsize_c))
 
     # the TanhLayer being fully-connected, it operates on 2D matrices of
     # shape (batch_size,num_pixels) (i.e matrix of rasterized images).
     # This will generate a matrix of shape (20,32*4*4) = (20,512)
     layer2_input = layer1.output.flatten(2)
 
+	r3 = r2 - filtersize_r + 1
+	c3 = c2 - filtersize_c + 1
     # construct a fully-connected sigmoidal layer
-    layer2 = HiddenLayer(rng, input=layer2_input, n_in=nkerns[1] * 29 * 77,
+	# Make sure (r2, c2) is divisble by (poolsize_r, poolsize_c)
+    layer2 = HiddenLayer(rng, input=layer2_input, n_in=nkerns[1] * (r3/poolsize_r) * (c3/poolsize_c),
                          n_out=500, activation=T.tanh)
 
     # classify the values of the fully-connected sigmoidal layer
