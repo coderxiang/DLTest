@@ -1,4 +1,5 @@
 data/BDGP
+code/*~
 code/*.pyc
 data/*.gz
 data/*.pkl
