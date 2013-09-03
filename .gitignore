@@ -5,6 +5,7 @@ data/*.gz
 data/*.pkl
 data/*.zip
 data/Nottingham
+data/div4ImgRange
 html
 *.pyc
 *~

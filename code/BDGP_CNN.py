@@ -104,9 +104,10 @@ class LeNetConvPoolLayer(object):
 
 def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 					#                    dataset='../data/mnist.pkl.gz',
-				     dataset='../data/bdgp.pkl.gz',
+				    # dataset='../data/bdgp.pkl.gz',
+			         dataset='../data/bdgp_range_reshape.pkl.gz',
 					#dataset='../data/bdgp_reshape.pkl.gz',
-                    nkerns=[20, 50], batch_size=10):
+                    nkerns=[20, 50], batch_size=250):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -146,8 +147,8 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 # [int] labels
 
 
-    r1 = 128
-    c1 = 320
+    r1 = 32
+    c1 = 80
     poolsize_r = 2
     poolsize_c = 2
     filtersize_r = 5
