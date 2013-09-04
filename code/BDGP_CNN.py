@@ -107,7 +107,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 				    # dataset='../data/bdgp.pkl.gz',
 			         dataset='../data/bdgp_range_reshape.pkl.gz',
 					#dataset='../data/bdgp_reshape.pkl.gz',
-                    nkerns=[20, 50], batch_size=250):
+                    nkerns=[6, 12], batch_size=5):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -152,7 +152,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     poolsize_r = 2
     poolsize_c = 2
     filtersize_r = 5
-    filtersize_c = 13
+    filtersize_c = 5
 	
     ishape = (r1, c1)  # this is the size of BDGP images
 
